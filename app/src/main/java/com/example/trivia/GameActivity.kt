@@ -29,6 +29,7 @@ class GameActivity : AppCompatActivity() {
         val button2 = findViewById<Button>(R.id.button2)
         val button3 = findViewById<Button>(R.id.button3)
         val button4 = findViewById<Button>(R.id.button4)
+        var ansCompare: String? = ""
 
         val viewModelFactory = TriviaGameVMFactory(romeDAO)
         val viewModel by viewModels<TriviaGameVM> { viewModelFactory }
@@ -55,14 +56,22 @@ class GameActivity : AppCompatActivity() {
             button4.text = newAnsText4
         })
 
-        runTrivia(viewModel, button1, button2, button3, button4)
+        viewModel.ansCompare.observe(this, Observer { newAnsCompare ->
+            ansCompare = newAnsCompare
+        })
+
+        runTrivia(viewModel, button1, button2, button3, button4, ansCompare)
 
     }
 
-    fun runTrivia(viewModel: TriviaGameVM, button1: Button, button2: Button, button3: Button, button4: Button) {
+    fun runTrivia(viewModel: TriviaGameVM, button1: Button, button2: Button, button3: Button, button4: Button, ansCompare: String?) {
         lifecycleScope.launch {
             val quesCount = countSet(viewModel)
             var answerCount = 0
+            var ansCorrect = 0
+            val textAnsCorr = findViewById<TextView>(R.id.correctView)
+            val textQuesCount = findViewById<TextView>(R.id.totalView)
+            textQuesCount.text = quesCount.toString()
             var quesList:MutableList<Int> = viewModel.makeList()
             if (quesCount != null) {
                 if (quesCount > 0) {
@@ -70,35 +79,56 @@ class GameActivity : AppCompatActivity() {
                     answerCount += 1
 
                     button1.setOnClickListener {
-                        if (answerCount < quesCount) {
-                            lifecycleScope.launch {
+                        lifecycleScope.launch {
+                        if (button1.text == viewModel.ansCompare.value && answerCount <= quesCount) {
+                            ansCorrect += 1
+                            answerCount += 1
+                            textAnsCorr.text = ansCorrect.toString()
+                        }
+                        if (answerCount <= quesCount) {
                                 populate(viewModel, quesList)
-                                answerCount += 1
                             }
                         }
                     }
                     button2.setOnClickListener {
-                        if (answerCount < quesCount) {
-                            lifecycleScope.launch {
+                        lifecycleScope.launch {
+                        if (button2.text == viewModel.ansCompare.value && answerCount <= quesCount) {
+                            ansCorrect += 1
+                            answerCount += 1
+                            textAnsCorr.text = ansCorrect.toString()
+                            Log.d("GameActivity", "Comparison Triggered")
+                        }
+                        if (answerCount <= quesCount) {
                                 populate(viewModel, quesList)
-                                answerCount += 1
                             }
+
                         }
                     }
                     button3.setOnClickListener {
-                        if (answerCount < quesCount) {
-                            lifecycleScope.launch {
+                        lifecycleScope.launch {
+                        if (button3.text == viewModel.ansCompare.value && answerCount <= quesCount) {
+                            ansCorrect += 1
+                            answerCount += 1
+                            textAnsCorr.text = ansCorrect.toString()
+
+                        }
+                        if (answerCount <= quesCount) {
                                 populate(viewModel, quesList)
-                                answerCount += 1
                             }
+
                         }
                     }
                     button4.setOnClickListener {
-                        if (answerCount < quesCount) {
-                            lifecycleScope.launch {
+                        lifecycleScope.launch {
+                        if (button4.text == viewModel.ansCompare.value && answerCount <= quesCount) {
+                            ansCorrect += 1
+                            answerCount += 1
+                            textAnsCorr.text = ansCorrect.toString()
+                        }
+                        if (answerCount <= quesCount) {
                                 populate(viewModel, quesList)
-                                answerCount += 1
                             }
+
                         }
                     }
                 } else {

@@ -15,6 +15,8 @@ class TriviaGameVM (private val romeDAO: TriviaDAO?): ViewModel() {
     val ansText3 = MutableLiveData<String?>()
     val ansText4 = MutableLiveData<String?>()
 
+    val ansCompare = MutableLiveData<String?>()
+
     suspend fun getCount(): Int? {
         val quesCount = romeDAO?.getRowCount()
         return quesCount
@@ -31,6 +33,7 @@ class TriviaGameVM (private val romeDAO: TriviaDAO?): ViewModel() {
     suspend fun chooseQuestion(chosenQues: Int) {
         Log.d("GameActivity", "ChooseQuestion called")
 
+        ansCompare.postValue(romeDAO?.getCorrectText(chosenQues))
         quesText.postValue(romeDAO?.getQuesText(chosenQues))
         val answerOrder = (1..4).shuffled()
         ansText1.postValue(answerGet(answerOrder[0], chosenQues))
