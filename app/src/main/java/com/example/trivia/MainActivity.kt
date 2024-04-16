@@ -1,6 +1,8 @@
 package com.example.trivia
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -22,11 +24,11 @@ class MainActivity : AppCompatActivity() {
         val viewModelFactory = TriviaVMFactory(romeDAO)
         val viewModel by viewModels<TriviaMainVM> { viewModelFactory }
 
-        viewModel.quesText.observe(this, Observer { newQuesText ->
-            text1.text = newQuesText
-        })
+
         button1.setOnClickListener {
-            viewModel.updateText()
+            Log.d("MainActivity", "button1 clicked")
+            val intent = Intent(this@MainActivity, GameActivity::class.java)
+            startActivity(intent)
         }
 
     }

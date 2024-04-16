@@ -18,9 +18,24 @@ interface TriviaDAO {
     @Delete
     suspend fun delete(triviaEntity: TriviaEntity): Int
 
-    @Query("SELECT * FROM trivia WHERE id = :id")
-    suspend fun getById(id: Int): TriviaEntity
+    @Query("SELECT id FROM trivia")
+    suspend fun getById(): MutableList<Int>
 
     @Query("SELECT question_Text FROM trivia WHERE id = :id")
-    suspend fun getQuesText(id: Int): String
+    suspend fun getQuesText(id: Int?): String
+
+    @Query("SELECT answer_Correct FROM trivia WHERE id = :id")
+    suspend fun getCorrectText(id: Int?): String
+
+    @Query("SELECT answer_Wrong1 FROM trivia WHERE id = :id")
+    suspend fun getWrong1Text(id: Int?): String
+
+    @Query("SELECT answer_Wrong2 FROM trivia WHERE id = :id")
+    suspend fun getWrong2Text(id: Int?): String
+
+    @Query("SELECT answer_Wrong3 FROM trivia WHERE id = :id")
+    suspend fun getWrong3Text(id: Int?): String
+
+    @Query("SELECT COUNT(id) FROM trivia")
+    suspend fun getRowCount(): Int
 }
