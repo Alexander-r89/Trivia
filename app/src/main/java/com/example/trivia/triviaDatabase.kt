@@ -26,7 +26,7 @@ abstract class TriviaDatabase : RoomDatabase() {
                     context.applicationContext,
                     TriviaDatabase::class.java,
                     "TriviaDB.db"
-                ).createFromAsset("trivia2.db")
+                ).createFromAsset("trivia3.db")
                     .build()
                 INSTANCE = instance
                 return instance

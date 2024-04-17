@@ -1,6 +1,8 @@
 package com.example.trivia
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.ToggleButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +28,7 @@ class AddRemoveActivity : AppCompatActivity(), TriviaAdapter.OnItemClickListener
         val romeDB = TriviaDatabase.getDatabase(this)
         val romeDAO = romeDB.triviaDAO()
         val viewModelFactory = TriviaARVMFactory(romeDAO)
+        val addButton = findViewById<ImageButton>(R.id.imageAddButton)
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(TriviaARVM::class.java)
 
@@ -40,6 +43,11 @@ class AddRemoveActivity : AppCompatActivity(), TriviaAdapter.OnItemClickListener
             customAdapter.setData(newAllQues)
         })
 
+        addButton.setOnClickListener {
+            val intent = Intent(this@AddRemoveActivity, AddActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onItemClick(position: Int, text: String?) {
@@ -51,7 +59,9 @@ class AddRemoveActivity : AppCompatActivity(), TriviaAdapter.OnItemClickListener
                 viewModel.deleteItem(text)
             }
             if (!deleteToggle && updateToggle) {
-
+                val intent = Intent(this@AddRemoveActivity, UpdateActivity::class.java)
+                intent.putExtra("quesText", text)
+                startActivity(intent)
             }
         }
     }

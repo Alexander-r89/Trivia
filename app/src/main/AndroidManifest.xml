@@ -24,6 +24,7 @@
         <activity android:name=".GameActivity" />
         <activity android:name=".AddRemoveActivity" />
         <activity android:name="AddActivity"/>
+        <activity android:name="UpdateActivity"/>
     </application>
 
 </manifest>

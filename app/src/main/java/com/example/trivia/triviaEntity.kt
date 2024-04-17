@@ -8,7 +8,7 @@ import androidx.room.Entity
 data class TriviaEntity (
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 1,
+    var id: Int? = null,
 
     @ColumnInfo(name = "question_Text")
     val questionText: String,
