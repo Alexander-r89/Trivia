@@ -18,11 +18,17 @@ interface TriviaDAO {
     @Delete
     suspend fun delete(triviaEntity: TriviaEntity): Int
 
+    @Query("DELETE FROM trivia WHERE question_Text = :quesText")
+    suspend fun deleteByText(quesText: String?)
+
     @Query("SELECT id FROM trivia")
     suspend fun getById(): MutableList<Int>
 
     @Query("SELECT question_Text FROM trivia WHERE id = :id")
     suspend fun getQuesText(id: Int?): String
+
+    @Query("SELECT question_Text FROM trivia")
+    suspend fun getAllQuesText(): List<String?>
 
     @Query("SELECT answer_Correct FROM trivia WHERE id = :id")
     suspend fun getCorrectText(id: Int?): String

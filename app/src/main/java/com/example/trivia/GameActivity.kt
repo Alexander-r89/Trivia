@@ -34,7 +34,6 @@ class GameActivity : AppCompatActivity() {
         val viewModelFactory = TriviaGameVMFactory(romeDAO)
         val viewModel by viewModels<TriviaGameVM> { viewModelFactory }
 
-        Log.d("GameActivity", "onCreate called")
 
         viewModel.quesText.observe(this, Observer { newQuesText ->
             text1.text = newQuesText
@@ -96,7 +95,6 @@ class GameActivity : AppCompatActivity() {
                             ansCorrect += 1
                             answerCount += 1
                             textAnsCorr.text = ansCorrect.toString()
-                            Log.d("GameActivity", "Comparison Triggered")
                         }
                         if (answerCount <= quesCount) {
                                 populate(viewModel, quesList)

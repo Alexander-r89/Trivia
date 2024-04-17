@@ -16,8 +16,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val text1 = findViewById<TextView>(R.id.textViewTest)
         val button1 = findViewById<Button>(R.id.buttonTest)
+        val button2 = findViewById<Button>(R.id.addRemButton)
         val romeDB = TriviaDatabase.getDatabase(this)
         val romeDAO = romeDB.triviaDAO()
 
@@ -26,8 +26,12 @@ class MainActivity : AppCompatActivity() {
 
 
         button1.setOnClickListener {
-            Log.d("MainActivity", "button1 clicked")
             val intent = Intent(this@MainActivity, GameActivity::class.java)
+            startActivity(intent)
+        }
+
+        button2.setOnClickListener {
+            val intent = Intent(this@MainActivity, AddRemoveActivity::class.java)
             startActivity(intent)
         }
 
