@@ -42,7 +42,7 @@ class AddRemoveActivity : AppCompatActivity(), TriviaAdapter.OnItemClickListener
 
     }
 
-    override fun onItemClick(position: Int, text: String) {
+    override fun onItemClick(position: Int, text: String?) {
         lifecycleScope.launch {
             val deleteToggle = deleteSwitch.isChecked
             val updateToggle = updateSwitch.isChecked

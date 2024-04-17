@@ -14,7 +14,7 @@ class TriviaAdapter(private val listener: OnItemClickListener) :
     private var dataSet: List<String?> = listOf()
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int, text: String)
+        fun onItemClick(position: Int, text: String?)
     }
 
     class ViewHolder(view: View, private val listener: OnItemClickListener) : RecyclerView.ViewHolder(view), View.OnClickListener {
