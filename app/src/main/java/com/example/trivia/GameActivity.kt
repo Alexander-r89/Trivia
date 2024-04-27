@@ -1,7 +1,9 @@
 package com.example.trivia
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
@@ -46,7 +48,7 @@ class GameActivity : AppCompatActivity() {
             var quesList:MutableList<Int> = viewModel.makeList()
             if (quesCount != null) {
                 if (quesCount > 0) {
-                    populate(viewModel, quesList)
+                    populate(viewModel, quesList, button1, button2, button3, button4)
                     answerCount += 1
 
                     button1.setOnClickListener {
@@ -55,9 +57,31 @@ class GameActivity : AppCompatActivity() {
                             ansCorrect += 1
                             answerCount += 1
                             textAnsCorr.text = ansCorrect.toString()
+                            button1.setBackgroundColor(Color.GREEN)
+                            button1.setTextColor(Color.BLACK)
+                        } else {
+                            button1.setBackgroundColor(Color.RED)
+                            button1.setTextColor(Color.BLACK)
+                            if (button2.text == viewModel.ansCompare.value) {
+                                button2.setBackgroundColor(Color.GREEN)
+                                button2.setTextColor(Color.BLACK)
+                            }
+                            if (button3.text == viewModel.ansCompare.value) {
+                                button3.setBackgroundColor(Color.GREEN)
+                                button3.setTextColor(Color.BLACK)
+                            }
+                            if (button4.text == viewModel.ansCompare.value) {
+                                button4.setBackgroundColor(Color.GREEN)
+                                button4.setTextColor(Color.BLACK)
+                            }
                         }
                         if (answerCount <= quesCount) {
-                                populate(viewModel, quesList)
+                            Handler().postDelayed({
+                                lifecycleScope.launch {
+                                populate(viewModel, quesList, button1, button2, button3, button4)
+                                    }
+                            }, 3000)
+
                             }
                         }
                     }
@@ -67,9 +91,30 @@ class GameActivity : AppCompatActivity() {
                             ansCorrect += 1
                             answerCount += 1
                             textAnsCorr.text = ansCorrect.toString()
+                            button2.setBackgroundColor(Color.GREEN)
+                            button2.setTextColor(Color.BLACK)
+                        } else {
+                            button2.setBackgroundColor(Color.RED)
+                            button2.setTextColor(Color.BLACK)
+                            if (button1.text == viewModel.ansCompare.value) {
+                                button1.setBackgroundColor(Color.GREEN)
+                                button1.setTextColor(Color.BLACK)
+                            }
+                            if (button3.text == viewModel.ansCompare.value) {
+                                button3.setBackgroundColor(Color.GREEN)
+                                button3.setTextColor(Color.BLACK)
+                            }
+                            if (button4.text == viewModel.ansCompare.value) {
+                                button4.setBackgroundColor(Color.GREEN)
+                                button4.setTextColor(Color.BLACK)
+                            }
                         }
                         if (answerCount <= quesCount) {
-                                populate(viewModel, quesList)
+                            Handler().postDelayed({
+                                lifecycleScope.launch {
+                                    populate(viewModel, quesList, button1, button2, button3, button4)
+                                }
+                            }, 3000)
                             }
 
                         }
@@ -80,10 +125,30 @@ class GameActivity : AppCompatActivity() {
                             ansCorrect += 1
                             answerCount += 1
                             textAnsCorr.text = ansCorrect.toString()
-
+                            button3.setBackgroundColor(Color.GREEN)
+                            button3.setTextColor(Color.BLACK)
+                        } else {
+                            button3.setBackgroundColor(Color.RED)
+                            button3.setTextColor(Color.BLACK)
+                            if (button1.text == viewModel.ansCompare.value) {
+                                button1.setBackgroundColor(Color.GREEN)
+                                button1.setTextColor(Color.BLACK)
+                            }
+                            if (button2.text == viewModel.ansCompare.value) {
+                                button2.setBackgroundColor(Color.GREEN)
+                                button2.setTextColor(Color.BLACK)
+                            }
+                            if (button4.text == viewModel.ansCompare.value) {
+                                button4.setBackgroundColor(Color.GREEN)
+                                button4.setTextColor(Color.BLACK)
+                            }
                         }
                         if (answerCount <= quesCount) {
-                                populate(viewModel, quesList)
+                            Handler().postDelayed({
+                                lifecycleScope.launch {
+                                    populate(viewModel, quesList, button1, button2, button3, button4)
+                                }
+                            }, 3000)
                             }
 
                         }
@@ -94,9 +159,30 @@ class GameActivity : AppCompatActivity() {
                             ansCorrect += 1
                             answerCount += 1
                             textAnsCorr.text = ansCorrect.toString()
+                            button4.setBackgroundColor(Color.GREEN)
+                            button4.setTextColor(Color.BLACK)
+                        } else {
+                            button4.setBackgroundColor(Color.RED)
+                            button4.setTextColor(Color.BLACK)
+                            if (button1.text == viewModel.ansCompare.value) {
+                                button1.setBackgroundColor(Color.GREEN)
+                                button1.setTextColor(Color.BLACK)
+                            }
+                            if (button3.text == viewModel.ansCompare.value) {
+                                button3.setBackgroundColor(Color.GREEN)
+                                button3.setTextColor(Color.BLACK)
+                            }
+                            if (button2.text == viewModel.ansCompare.value) {
+                                button2.setBackgroundColor(Color.GREEN)
+                                button2.setTextColor(Color.BLACK)
+                            }
                         }
                         if (answerCount <= quesCount) {
-                                populate(viewModel, quesList)
+                            Handler().postDelayed({
+                                lifecycleScope.launch {
+                                    populate(viewModel, quesList, button1, button2, button3, button4)
+                                }
+                            }, 3000)
                             }
 
                         }
@@ -109,8 +195,16 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun populate(viewModel: TriviaGameVM, quesList:MutableList<Int>){
-        Log.d("GameActivity", quesList.toString())
+    suspend fun populate(viewModel: TriviaGameVM, quesList:MutableList<Int>, button1: Button, button2: Button, button3: Button, button4: Button){
+
+        button1.setBackgroundColor(Color.parseColor("#FF3700B3"))
+        button2.setBackgroundColor(Color.parseColor("#FF3700B3"))
+        button3.setBackgroundColor(Color.parseColor("#FF3700B3"))
+        button4.setBackgroundColor(Color.parseColor("#FF3700B3"))
+        button1.setTextColor(Color.WHITE)
+        button2.setTextColor(Color.WHITE)
+        button3.setTextColor(Color.WHITE)
+        button4.setTextColor(Color.WHITE)
             val chosenQues = quesList.removeLast()
             viewModel.chooseQuestion(chosenQues)
     }
