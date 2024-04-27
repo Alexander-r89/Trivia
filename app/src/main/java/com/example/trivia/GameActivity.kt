@@ -9,57 +9,29 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 
 class GameActivity : AppCompatActivity() {
+
+    private lateinit var romeDB: TriviaDatabase
+    private lateinit var romeDAO: TriviaDAO
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_activity)
-        val romeDB = TriviaDatabase.getDatabase(this)
-        val romeDAO = romeDB.triviaDAO()
-
-        val text1 = findViewById<TextView>(R.id.QuesView)
-        val button1 = findViewById<Button>(R.id.button)
-        val button2 = findViewById<Button>(R.id.button2)
-        val button3 = findViewById<Button>(R.id.button3)
-        val button4 = findViewById<Button>(R.id.button4)
-        var ansCompare: String? = ""
-
-        val viewModelFactory = TriviaGameVMFactory(romeDAO)
-        val viewModel by viewModels<TriviaGameVM> { viewModelFactory }
-
-
-        viewModel.quesText.observe(this, Observer { newQuesText ->
-            text1.text = newQuesText
-        })
-
-        viewModel.ansText1.observe(this, Observer { newAnsText1 ->
-            button1.text = newAnsText1
-        })
-
-        viewModel.ansText2.observe(this, Observer { newAnsText2 ->
-            button2.text = newAnsText2
-        })
-
-        viewModel.ansText3.observe(this, Observer { newAnsText3 ->
-            button3.text = newAnsText3
-        })
-
-        viewModel.ansText4.observe(this, Observer { newAnsText4 ->
-            button4.text = newAnsText4
-        })
-
-        viewModel.ansCompare.observe(this, Observer { newAnsCompare ->
-            ansCompare = newAnsCompare
-        })
-
-        runTrivia(viewModel, button1, button2, button3, button4, ansCompare)
+        lifecycleScope.launch {
+            initDatabaseAndDao()
+            setupUI()
+        }
 
     }
 
@@ -149,4 +121,50 @@ class GameActivity : AppCompatActivity() {
 
     }
 
+
+
+private suspend fun initDatabaseAndDao() {
+    withContext(Dispatchers.IO) {
+        romeDB = TriviaDatabase.getDatabase(this@GameActivity)
+        romeDAO = romeDB.triviaDAO()!!
+    }
+}
+
+    private fun setupUI() {
+        val text1 = findViewById<TextView>(R.id.QuesView)
+        val button1 = findViewById<Button>(R.id.button)
+        val button2 = findViewById<Button>(R.id.button2)
+        val button3 = findViewById<Button>(R.id.button3)
+        val button4 = findViewById<Button>(R.id.button4)
+        var ansCompare: String? = ""
+
+        val viewModel = ViewModelProvider(this, TriviaGameVMFactory(romeDAO)).get(TriviaGameVM::class.java)
+
+
+        viewModel.quesText.observe(this, Observer { newQuesText ->
+            text1.text = newQuesText
+        })
+
+        viewModel.ansText1.observe(this, Observer { newAnsText1 ->
+            button1.text = newAnsText1
+        })
+
+        viewModel.ansText2.observe(this, Observer { newAnsText2 ->
+            button2.text = newAnsText2
+        })
+
+        viewModel.ansText3.observe(this, Observer { newAnsText3 ->
+            button3.text = newAnsText3
+        })
+
+        viewModel.ansText4.observe(this, Observer { newAnsText4 ->
+            button4.text = newAnsText4
+        })
+
+        viewModel.ansCompare.observe(this, Observer { newAnsCompare ->
+            ansCompare = newAnsCompare
+        })
+
+        runTrivia(viewModel, button1, button2, button3, button4, ansCompare)
+    }
 }

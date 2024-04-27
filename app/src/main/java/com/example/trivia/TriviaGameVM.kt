@@ -3,8 +3,10 @@ package com.example.trivia
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TriviaGameVM (private val romeDAO: TriviaDAO?): ViewModel() {
@@ -17,20 +19,19 @@ class TriviaGameVM (private val romeDAO: TriviaDAO?): ViewModel() {
 
     val ansCompare = MutableLiveData<String?>()
 
-    suspend fun getCount(): Int? {
+    suspend fun getCount(): Int? = withContext(Dispatchers.IO) {
         val quesCount = romeDAO?.getRowCount()
-        return quesCount
+        return@withContext quesCount
     }
 
-    suspend fun makeList(): MutableList<Int> {
+    suspend fun makeList() = withContext(Dispatchers.IO) {
         var quesList: MutableList<Int> = romeDAO!!.getById()
         quesList = quesList.shuffled().toMutableList()
-
-        return quesList
+        return@withContext quesList
     }
 
 
-    suspend fun chooseQuestion(chosenQues: Int) {
+    suspend fun chooseQuestion(chosenQues: Int) = withContext(Dispatchers.IO) {
         Log.d("GameActivity", "ChooseQuestion called")
 
         ansCompare.postValue(romeDAO?.getCorrectText(chosenQues))
